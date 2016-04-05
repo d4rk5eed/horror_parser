@@ -2,6 +2,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'reverse_markdown'
 require 'yaml'
+require 'libnotify'
 
 url = 'http://horrorbook.ru/category/news'
 
@@ -67,6 +68,7 @@ if article_list.any?
       article_body = ReverseMarkdown.convert(article_body).gsub(/<\/?[^>]*>/, "")
       #print article_body
       #print "\n"
+      Libnotify.show(:body => title, :append=> true, :summary => 'Incoming review', :timeout => 60)
 
       File.open(filename + '.md', 'w') {
         |file| file.write(title + "\n" + article_body)
