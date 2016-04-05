@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'reverse_markdown'
 require 'yaml'
 require 'libnotify'
+require 'pocket-ruby'
 
 url = 'http://horrorbook.ru/category/news'
 
@@ -12,6 +13,14 @@ article_list = []
 #def read_config
 config = YAML.load_file("config/config.yml")
 @targets = config['targets']
+@pocket_access_token = config['pocket_access_token']
+@pocket_consumer_key = config['pocket_consumer_key']
+
+Pocket.configure do |config|
+  config.consumer_key = @pocket_consumer_key
+end
+
+@pocket_client = Pocket.client(access_token: @pocket_access_token)
 
 @last_article_time =
   if File.exists? 'config/last_timestamp'
@@ -65,6 +74,7 @@ if article_list.any?
     if article_body =~ Regexp.new(@targets.join('|'), :i)
       article_body = ReverseMarkdown.convert(article_body).gsub(/<\/?[^>]*>/, "")
       Libnotify.show(:body => title, :append=> true, :summary => 'Incoming review', :timeout => 60)
+      @pocket_client.add(url: article_url, tags: 'ССК2017')
 
       File.open(filename + '.md', 'w') {
         |file| file.write(title + "\n" + article_body)
