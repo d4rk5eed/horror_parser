@@ -34,11 +34,11 @@ loop do
 
   cycle_break = false
   doc.css('article').each do |article|
-    # print ">>>>>>>>>>>>>>>>>>>\n"
-    # print article.inner_html.strip
     article_link = article.at_css('header h1 a')
-    @check_point ||= @article_time = DateTime.parse(article.at_css('header time')['datetime'])
+    @article_time = DateTime.parse(article.at_css('header time')['datetime'])
+    @check_point ||= @article_time
 
+    #Log and remove
     print @article_time
     if article_link['href'] && @article_time > @last_article_time
       article_list << article_link['href']
@@ -63,11 +63,7 @@ if article_list.any?
     article_body = doc.at_css('article .mso-page-content').inner_html
 
     if article_body =~ Regexp.new(@targets.join('|'), :i)
-      #print "HEADER: #{title}\n"
-      #print "BODY------------->\n"
       article_body = ReverseMarkdown.convert(article_body).gsub(/<\/?[^>]*>/, "")
-      #print article_body
-      #print "\n"
       Libnotify.show(:body => title, :append=> true, :summary => 'Incoming review', :timeout => 60)
 
       File.open(filename + '.md', 'w') {
