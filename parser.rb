@@ -78,5 +78,5 @@ if article_list.any?
 end
 
 File.open('config/last_timestamp', 'w') {
-  |file| file.write(@article_time)
+  |file| file.write(@check_point)
 }
