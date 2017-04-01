@@ -1,1 +1,14 @@
-targets: [great novel, another great novel]
+default: &default
+  start_url: 'http://horrorbook.ru/tag/%D0%BE%D0%B1%D0%B7%D0%BE%D1%80%D1%8B'
+development:
+  <<: *default
+  logger: 'log/development.log'
+  logger_level: 'info'
+test:
+  <<: *default
+  logger: 'log/test.log'
+  logger_level: 'debug'
+production:
+  <<: *default
+  logger: 'log/production.log'
+  logger_level: 'info'
