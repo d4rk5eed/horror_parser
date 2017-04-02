@@ -16,6 +16,7 @@ class HorrorParser
 
       def normalize(text)
         text
+          .mb_chars
           .downcase
           .gsub(/[^\w\s\p{Cyrillic}]+/, ' ')
           .gsub(/\s{2,}/, ' ')
@@ -23,6 +24,7 @@ class HorrorParser
           .gsub(/\sда$|\sнет$/, '')
           .gsub(/^\d+/, '')
           .strip
+          .to_s
       end
     end
   end
