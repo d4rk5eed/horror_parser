@@ -1,13 +1,24 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
-gem 'nokogiri'
-gem 'simple-rss'
-gem 'reverse_markdown'
-gem 'libnotify'
-gem 'rspec'
-gem 'rake'
-gem 'activerecord'
-gem 'pg'
-gem 'database_cleaner'
-gem 'rubocop'
+group :default do
+  gem 'nokogiri'
+  gem 'simple-rss'
+  gem 'reverse_markdown'
+  gem 'libnotify'
+  gem 'rake'
+  gem 'activerecord'
+  gem 'pg'
+end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'rspec'
+end
+
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rvm'
+  gem 'rubocop'
+end
