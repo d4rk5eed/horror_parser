@@ -24,7 +24,7 @@ set :pty, true
 append :linked_files, "config/database.yml", "config/config.yml"
 
 # Default value for linked_dirs is []
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets"
+append :linked_dirs, "config", "log", "tmp/pids", "tmp/cache", "tmp/sockets"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
