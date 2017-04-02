@@ -2,7 +2,6 @@
 # recursively requires all files in ./lib and down that end in .rb
 require 'active_record'
 require 'nokogiri'
-require 'database_cleaner'
 
 Dir.glob('./lib/*.rb').each do |file|
   require file
