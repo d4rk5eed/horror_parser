@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-export DISPLAY=:0
+#export DISPLAY=:0
 #cd ${pwd}/..
-#source ${HOME}/.rvm/environments/ruby-2.2.1@horror_parser
+source ${HOME}/.rvm/environments/ruby-2.3.3
 
-ruby harvest.rb
+APP_ENV=production bundle exec ruby harvest.rb

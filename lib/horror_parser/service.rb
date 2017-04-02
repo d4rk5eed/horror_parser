@@ -15,6 +15,12 @@ class HorrorParser
       end
 
       def normalize(text)
+        # TODO need normalizing for these wierd
+        # №6
+        # 20/18
+        # 30-й километр
+        # 32
+        # "4, 8, 16, 32"
         text
           .mb_chars
           .downcase

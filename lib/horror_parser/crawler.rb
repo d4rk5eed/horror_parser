@@ -55,7 +55,7 @@ class HorrorParser
       $logger.info "Fetching list #{article_list}"
       HorrorParser::Service.persist_pages(fetch_pages_from_urls(article_list))
 
-      update_last_article_time(check_point)
+      update_last_article_time(check_point) # TODO update iff pages were persisted
       $logger.info "Crawling finished"
     end
 
