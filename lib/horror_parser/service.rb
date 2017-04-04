@@ -15,20 +15,15 @@ class HorrorParser
       end
 
       def normalize(text)
-        # TODO need normalizing for these wierd
-        # №6
-        # 20/18
-        # 30-й километр
-        # 32
-        # "4, 8, 16, 32"
         text
           .mb_chars
           .downcase
+          .gsub(/^\d+\.\s/, '')
+          .gsub(/№/, 'N')
           .gsub(/[^\w\s\p{Cyrillic}]+/, ' ')
           .gsub(/\s{2,}/, ' ')
           .tr('ё', 'е')
           .gsub(/\sда$|\sнет$/, '')
-          .gsub(/^\d+/, '')
           .strip
           .to_s
       end

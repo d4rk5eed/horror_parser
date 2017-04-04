@@ -77,6 +77,20 @@ describe HorrorParser::Service do
         .to eq('deus ex mmachina')
       expect(HorrorParser::Service.normalize('ГОВОРИ ДА ВСЕГДА'))
         .to eq('говори да всегда')
+      expect(HorrorParser::Service.normalize('№6'))
+        .to eq('N6')
+      expect(HorrorParser::Service.normalize('20/18'))
+        .to eq('20 18')
+      expect(HorrorParser::Service.normalize('30-й километр'))
+        .to eq('30 й километр')
+      expect(HorrorParser::Service.normalize('32'))
+        .to eq('32')
+      expect(HorrorParser::Service.normalize('4, 8, 16, 32'))
+        .to eq('4 8 16 32')
+      expect(HorrorParser::Service.normalize('23. 4, 8, 16, 32'))
+        .to eq('4 8 16 32')
+      expect(HorrorParser::Service.normalize('121. «Сядьте поудобнее. Расслабьтесь» - ДА'))
+        .to eq('сядьте поудобнее расслабьтесь')
     end
   end
 end
