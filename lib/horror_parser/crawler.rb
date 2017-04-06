@@ -48,7 +48,7 @@ class HorrorParser
         end
 
         break if cycle_break
-        break unless next_page_link['href']
+        break unless next_page_link && next_page_link['href']
         url = next_page_link['href']
       end
 
