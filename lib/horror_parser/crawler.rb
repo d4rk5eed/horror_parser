@@ -1,6 +1,13 @@
 require 'open-uri'
+require "observer"
+
 class HorrorParser
   class Crawler
+    include Observable
+
+    attr_accessor :reviews_list
+    attr_reader :check_point
+
     def initialize
       @start_url = $config[:start_url]
     end
@@ -9,17 +16,8 @@ class HorrorParser
       @last_article_time ||= Setting.last.last_article_time
     end
 
-    def update_last_article_time(timestamp)
-      Setting.last.update_attribute(:last_article_time, timestamp)
-      $logger.info "Checkpoint updated to: #{timestamp}"
-    end
-
     def init_check_point(checkpoint)
       @check_point ||= checkpoint
-    end
-
-    def check_point
-      @check_point
     end
 
     def persist_new_pages
@@ -37,7 +35,6 @@ class HorrorParser
           article_link = article.at_css('header h1 a')
           article_time = DateTime.parse(article.at_css('header time')['datetime'])
           init_check_point(article_time)
-          #Log and remove
           $logger.info "Found article with timestamp #{article_time.to_s}"
           if article_link['href'] && article_time > last_article_time
             article_list << article_link['href']
@@ -53,10 +50,15 @@ class HorrorParser
       end
 
       $logger.info "Fetching list #{article_list}"
-      HorrorParser::Service.persist_pages(fetch_pages_from_urls(article_list))
+      self.reviews_list = HorrorParser::Service.persist_pages(fetch_pages_from_urls(article_list))
 
-      update_last_article_time(check_point) # TODO update iff pages were persisted
+      notify
       $logger.info "Crawling finished"
+    end
+
+    def notify
+      changed if reviews_list.any?
+      notify_observers(list: reviews_list, check_point: check_point)
     end
 
     def fetch_pages_from_urls(urls)

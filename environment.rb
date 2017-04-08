@@ -19,5 +19,5 @@ $config = YAML.load_file("config/config.yml")[ENV['APP_ENV']].symbolize_keys
 db_config = YAML.load_file("config/database.yml")[ENV['APP_ENV']]
 # tells AR what db file to use
 ActiveRecord::Base.establish_connection(db_config)
-$logger = Logger.new($config[:logger], 'daily')
+$logger = Logger.new($config[:logger] == 'STDOUT' ? STDOUT : $config[:logger], 'daily')
 $logger.level = $config[:logger_level]
