@@ -1,3 +1,6 @@
 require_relative 'environment'
 
-HorrorParser::Crawler.new.persist_new_pages
+crawler = HorrorParser::Crawler.new
+HorrorParser::SettingObserver.new(crawler)
+HorrorParser::BotObserver.new(crawler)
+crawler.persist_new_pages

@@ -12,7 +12,7 @@ end
 
 describe HorrorParser::Service do
   it 'persist_pages return true on empty list' do
-    expect(HorrorParser::Service.persist_pages([])).to be(true)
+    expect(HorrorParser::Service.persist_pages([])).to eq([])
   end
 
   it 'persist_pages return true for list of elemets' do
@@ -23,7 +23,7 @@ describe HorrorParser::Service do
     File.open('spec/fixtures/2.html', 'r') do |file|
       pages << { url: 'http://horrorbook.ru/page/2', body: file.read }
     end
-    expect(HorrorParser::Service.persist_pages(pages)).to be(true)
+    expect(HorrorParser::Service.persist_pages(pages)).to be_kind_of(Array)
   end
 
   it 'persist_pages persists pages to db for list of elements' do

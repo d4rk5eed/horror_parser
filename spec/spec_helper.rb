@@ -19,6 +19,9 @@
 ENV['APP_ENV'] = 'test'
 require_relative '../environment'
 require 'database_cleaner'
+require 'webmock/rspec'
+
+include WebMock::API
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -114,5 +117,9 @@ RSpec.configure do |config|
     DatabaseCleaner.cleaning do
       example.run
     end
+  end
+
+  config.before(:each) do
+    stub_request(:any, $config[:bot_uri])
   end
 end

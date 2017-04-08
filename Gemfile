@@ -14,6 +14,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'rspec'
+  gem 'webmock'
 end
 
 group :development do
