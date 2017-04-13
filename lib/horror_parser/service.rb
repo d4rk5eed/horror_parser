@@ -8,7 +8,7 @@ class HorrorParser
           article_body = page_body.at_css('article .mso-page-content').inner_html
 
           tags = article_body.scan(%r{<strong>(.*)</strong>})
-          tags = article_body.scan(%r{<p>(.*)\.*\s*(?:ДА|НЕТ)\.*</p>}) if tags.empty?
+          tags = article_body.scan(%r{<p>(.*)\.*\s*(?:ДА|НЕТ|да|нет|Да|Нет|Возможно)\.*</p>}) if tags.empty?
           if tags.any?
             tags = tags.flatten.map{ |p| normalize(p) }
             tags.select! { |tag| tag.present? }
@@ -17,7 +17,7 @@ class HorrorParser
             $logger.info("#{persisted_page.id} persisted for url #{persisted_page.url} and tags #{persisted_page.tags}")
             $logger.debug("Persisted page body #{persisted_page.body}")
           else
-            $logger.info("No tags found for url #{persisted_page.url}")
+            $logger.info("No tags found for url #{page[:url]}")
           end
 
           acc
