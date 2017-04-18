@@ -54,8 +54,8 @@ describe HorrorParser::Observer do
     }
 
     it 'markdowns text' do
-      list = [{title: "title1", url: "http://mail.google.com"}, {title: "title2", url: "http://www.google.com"}]
-      text = "*title1*: [>>>>](http://mail.google.com)\n*title2*: [>>>>](http://www.google.com)\n"
+      list = [{title: "title1", url: "http://mail.google.com", tags: ['a', 'b']}, {title: "title2", url: "http://www.google.com", tags: ['c', 'd']}]
+      text = "[title1](http://mail.google.com)\n_a, b_\n\n[title2](http://www.google.com)\n_c, d_\n\n"
       expect(observer.markdown_hash(list)).to eq(text)
     end
   end
