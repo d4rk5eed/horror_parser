@@ -39,8 +39,16 @@ class HorrorParser
     end
 
     def post_body(list)
+      #tag_list = list.each_with_object([]) { |x, acc| acc << x[:tags] }.flatten.uniq
+
       User.active.each_with_object({}) do |u, acc|
-        acc[u.chat_id] = markdown_hash(list)
+        if u.tags.empty?
+          acc[u.chat_id] = markdown_hash(list)
+        else
+          pages_list = filter_by(u.tags, list)
+          acc[u.chat_id] = markdown_hash(pages_list) if pages_list.any?
+          #(u.tags & tag_list).present?
+        end
       end.to_json
     end
 
@@ -48,6 +56,10 @@ class HorrorParser
       list.each_with_object('') do |obj, memo|
         memo << "[#{obj[:title]}](#{obj[:url]})\n_#{obj[:tags].join(', ')}_\n\n"
       end
+    end
+
+    def filter_by(tags, list)
+      list.select { |page| (page[:tags] & tags).present? }
     end
   end
 end

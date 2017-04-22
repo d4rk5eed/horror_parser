@@ -48,6 +48,23 @@ describe HorrorParser::Observer do
     end
 
   end
+
+  context '.markdown_hash' do
+    let(:observer) {
+      HorrorParser::BotObserver.new(crawler)
+    }
+
+    it 'post_body' do
+      list = [{title: "title1", url: "http://mail.google.com", tags: ['a', 'b']}, {title: "title2", url: "http://www.google.com", tags: ['c', 'd']}]
+
+      User.create(chat_id: "1", active: true, tags: ['a','c'])
+      User.create(chat_id: "2", active: true, tags: ['e', 'f'])
+      User.create(chat_id: "3", active: true, tags: [])
+
+      expect(observer.post_body(list)).to eq("{\"1\":\"[title1](http://mail.google.com)\\n_a, b_\\n\\n[title2](http://www.google.com)\\n_c, d_\\n\\n\",\"3\":\"[title1](http://mail.google.com)\\n_a, b_\\n\\n[title2](http://www.google.com)\\n_c, d_\\n\\n\"}")
+    end
+  end
+
   context '.markdown_hash' do
     let(:observer) {
       HorrorParser::BotObserver.new(crawler)
